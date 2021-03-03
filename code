@@ -1,6 +1,6 @@
 from google.colab import drive
 drive.mount('/content/drive')
-
+#import libraries
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -10,26 +10,32 @@ from scipy import stats
 import plotly.express as px
 import plotly.figure_factory as ff
 import plotly.graph_objects as go
+#import data file
 stock_df = pd.read_csv('/content/drive/MyDrive/Python+for+Financial+Analysis+-+Course+Package/Part 2. Financial Analysis in Python/stock.csv')
+#sort data
 stock_df.sort_values('Date',ascending= True)
 stock_df.describe()
+#visualize stock prices
 def plotting(df,fig_title):
   df.plot(x = 'Date', figsize = (15,7), linewidth = 3, title = fig_title)
   plt.grid()
   plt.show()
 plotting(stock_df, 'Raw Stock Prices')
+#normalize stock prices
 def normalized(df):
   copy_df = df.copy()
   for i in copy_df.columns[1:]:
     copy_df[i] = copy_df[i]/copy_df[i][0]
   return copy_df
 plotting(normalized(stock_df),'Normalized stock prices')
+#create interactive visualization
 def interactive_plot(df,title):
   fig = px.line(title=title)
   for i in df.columns[1:]:
     fig.add_scatter(x = df['Date'],y = df[i], name = i )
   fig.show()
 interactive_plot(stock_df,'Raw Stock Prices')
+#calculate daily returns
 def daily_return(df):
   df_daily_return = df.copy()
   for i in df.columns[1:]:
