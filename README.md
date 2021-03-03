@@ -1,1 +1,1 @@
-# stock_data_analysis
+# Project 1: Stock Data Analysis
