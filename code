@@ -1,0 +1,41 @@
+from google.colab import drive
+drive.mount('/content/drive')
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+from copy import copy
+from scipy import stats
+import plotly.express as px
+import plotly.figure_factory as ff
+import plotly.graph_objects as go
+stock_df = pd.read_csv('/content/drive/MyDrive/Python+for+Financial+Analysis+-+Course+Package/Part 2. Financial Analysis in Python/stock.csv')
+stock_df.sort_values('Date',ascending= True)
+stock_df.describe()
+def plotting(df,fig_title):
+  df.plot(x = 'Date', figsize = (15,7), linewidth = 3, title = fig_title)
+  plt.grid()
+  plt.show()
+plotting(stock_df, 'Raw Stock Prices')
+def normalized(df):
+  copy_df = df.copy()
+  for i in copy_df.columns[1:]:
+    copy_df[i] = copy_df[i]/copy_df[i][0]
+  return copy_df
+plotting(normalized(stock_df),'Normalized stock prices')
+def interactive_plot(df,title):
+  fig = px.line(title=title)
+  for i in df.columns[1:]:
+    fig.add_scatter(x = df['Date'],y = df[i], name = i )
+  fig.show()
+interactive_plot(stock_df,'Raw Stock Prices')
+def daily_return(df):
+  df_daily_return = df.copy()
+  for i in df.columns[1:]:
+    for j in range(1,len(df)):
+      df_daily_return[i][j] = ((df[i][j]-df[i][j-1])/df[i][j-1])*100
+    df_daily_return[i][0] = 0
+  return df_daily_return
+daily_return(stock_df)
+interactive_plot(daily_return(stock_df),'Daily returns')
