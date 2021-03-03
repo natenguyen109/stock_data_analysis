@@ -1,1 +1,1 @@
-# Project 1: Stock Data Analysis
+# Data Science Project : Stock Data Analysis
